@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <title>Rest Api</title>
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+      .btn {
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <section
+      class="container"
+      id="app"
+      style="margin-top: 5rem; width: 50%"
+      v-cloak
+    >
+      <div class="row">
+        <form class="col s12" @submit.prevent="createContact">
+          <div class="row">
+            <div class="input-field col s6">
+              <label for="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                class="validate"
+                v-model="form.name"
+                required
+              />
+            </div>
+
+            <div class="input-field col s6">
+              <label for="value">Value</label>
+              <input
+                id="value"
+                type="text"
+                class="validate"
+                v-model="form.value"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col s12">
+              <button class="btn waves-effect waves-light" type="submit">
+                Create<i class="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div v-if="isLoading" class="center">
+        <loader />
+      </div>
+      <div class="col s12 m7" v-else-if="contacts.length">
+        <h3 class="header">Contact cards</h3>
+        <div
+          class="card horizontal"
+          :style="{boxShadow: contact.marked ? '0px 4px 10px 4px rgba(135, 124, 38, 0.3)' : ''}"
+          v-for="contact in contacts"
+        >
+          <div class="card-stacked">
+            <div class="card-content">
+              <p>
+                ID: {{contact.id}}
+                <span class="badge yellow" v-if="contact.marked">Marked</span>
+              </p>
+            </div>
+            <div class="card-action">
+              <h5>Name: {{contact.name}}</h5>
+              <h5>Value: {{contact.value}}</h5>
+            </div>
+            <div class="card-action">
+              <button
+                class="waves-effect waves-light btn"
+                @click="markContact(contact.id)"
+              >
+                <i class="material-icons left">delete</i>Mark
+              </button>
+              <button
+                class="waves-effect waves-light btn red"
+                @click="deleteContact(contact.id)"
+              >
+                <i class="material-icons left">bookmark_add</i>Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="center" v-else>No contacts</p>
+    </section>
+    <script type="module" src="frontend.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
